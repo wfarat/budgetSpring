@@ -4,7 +4,6 @@ import com.planimate.budget.entities.Transaction;
 import com.planimate.budget.entities.User;
 import com.planimate.budget.services.TransactionService;
 import com.planimate.budget.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
-    @Autowired
-    private TransactionService transactionService;
 
-    @Autowired
-    private UserService userService;
+    private final TransactionService transactionService;
+    private final UserService userService;
+
+    public TransactionController(TransactionService transactionService, UserService userService) {
+        this.transactionService = transactionService;
+        this.userService = userService;
+    }
     @GetMapping
     public List<Transaction> getAllTransactions(Principal principal) {
         User user = userService.findByEmail(principal.getName());
